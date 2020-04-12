@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(description="This script downloads all images f
 parser.add_argument("url", help="The URL of the web page you want to download images")
 parser.add_argument("-c", "--cookie", help="Cookie for your session ID.")
 parser.add_argument("-p", "--path",
-                    help="The Directory you want to store your images, default is the domain of URL passed")
+                 help="The Directory you want to store your images, default is the domain of URL passed")
 
 args = parser.parse_args()
 url = args.url

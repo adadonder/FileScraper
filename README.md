@@ -1,5 +1,8 @@
 # PhotoScraper
+
 PhotoScraper is a tool that downloads all the images on a website. Currently doesn't work on website that use JS to host pics.
+
+### Installation
 ````
 $ python3 setup.py install
 ````
@@ -8,6 +11,7 @@ or
 $ pip install .
 ````
 
+### Usage
 Be sure to run with ``python3``.
 ```
 usage: pscraper.py [-h] [-c COOKIE] [-p PATH] url
@@ -25,8 +29,8 @@ optional arguments:
                         is the domain of URL passed
 
 ```
-<ANY ADDITIONAL INFO>
-
+### License
 PhotoScraper is released under the Apache 2.0 license. See [LICENSE](https://github.com/adadonder/PhotoScraper/blob/master/LICENSE) for details.
 
+###Contact
 Feel free to contact me via e-mail: adadonderr@gmail.com
