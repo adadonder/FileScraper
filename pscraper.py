@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(description="This script downloads all images f
 parser.add_argument("url", help="The URL of the web page you want to download images")
 parser.add_argument("-c", "--cookie", help="Cookie for your session ID.")
 parser.add_argument("-p", "--path",
-                 help="The Directory you want to store your images, default is the domain of URL passed")
+                    help="The Directory you want to store your images, default is the domain of URL passed")
 
 args = parser.parse_args()
 url = args.url
@@ -89,7 +89,8 @@ def download(url_in, pathname):
     file_name = os.path.join(pathname, url_in.split("/")[-1])
 
     # Visual progress bar
-    progress_bar = tqdm(response.iter_content(1024), f"Downloading {file_name}", total=file_size, unit="B", unit_scale=True, unit_divisor=1024)
+    progress_bar = tqdm(response.iter_content(1024), f"Downloading {file_name}", total=file_size, unit="B",
+                        unit_scale=True, unit_divisor=1024)
     with open(file_name, "wb") as f:
         for progress in progress_bar:
             f.write(progress)
