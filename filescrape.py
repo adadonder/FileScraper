@@ -6,11 +6,16 @@ import os
 from tqdm import tqdm
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin, urlparse
+from concurrent.futures import ThreadPoolExecutor
 
 parser = argparse.ArgumentParser(description="This script downloads all images from a web page")
 parser.add_argument("url", help="The URL of the web page you want to download images")
 parser.add_argument("extension", help="The extension of the files to download (.jpg , .pdf etc.)")
-parser.add_argument("-c", "--cookie", help="Cookie for your session ID.")
+parser.add_argument("-c", "--cookie", help="Cookie for your session ID. (If the web page requires a log-in)")
+parser.add_argument("-t", "--threads", type=int,
+                    help="Number of threads to run. Default: 1. Higher value yields faster results "
+                         "but might put pressure on your hardware. Also when downloading multiple "
+                         "files using higher thread count, individual downloads may slow down.")
 parser.add_argument("-p", "--path",
                     help="The Directory you want to store your images, default is the domain of URL passed")
 
@@ -18,6 +23,11 @@ args = parser.parse_args()
 url = args.url
 extension = args.extension
 path = args.path
+thread_count = args.threads
+
+if not thread_count:
+    thread_count = 1
+
 cookie = args.cookie
 if cookie:
     cookie_key = cookie.split("=")[0]
@@ -53,6 +63,7 @@ def get_all_files(url_in, extension_in):
 
     soup = bs(session.get(url=url_in, cookies=cookie).content, "html.parser")
     urls = []
+    # Check if the extension is from an image
     if extension_in == ".jpg" or extension_in == ".png" or extension_in == ".jpeg":
         for img in tqdm(soup.find_all("img"), "Extracting images"):
             img_url = img.attrs.get("src")
@@ -77,7 +88,8 @@ def get_all_files(url_in, extension_in):
             if not file_url:  # If not a file_url, skip
                 continue
 
-            if not (file_url[-3:] == extension_in or file_url[-4:] == extension_in):  # Skip if the extensions don't match.
+            if not (file_url[-3:] == extension_in or file_url[
+                                                     -4:] == extension_in):  # Skip if the extensions don't match.
                 continue
 
             # Make the new url by combining the original url and the file url.
@@ -94,11 +106,12 @@ def get_all_files(url_in, extension_in):
                 urls.append(file_url)
     if len(urls) == 0:
         num_files_found = len(soup.find_all("a"))
-        sys.exit(f"Of the {num_files_found} files, none of them had {extension_in} as their extension. No files were downloaded.")
+        sys.exit(
+            f"Of the {num_files_found} files, none of them had {extension_in} as their extension. No files were downloaded.")
     return urls
 
 
-def download(url_in, pathname):
+def download(url_in, pathname=path):
     """
     Download images from url_in into the pathname
     :param url_in: URL of the image
@@ -128,15 +141,14 @@ def download(url_in, pathname):
             progress_bar.update(len(progress))
 
 
-def main(url_in, extension_in, path_in):
+def main(url_in, extension_in):
     # get all files
     files = get_all_files(url_in, extension_in)
-    # for file in files:
-    #     print(file)
-    for file in files:
-        # download each file
-        download(file, path_in)
+    # Use threads to speed up the download process
+    with ThreadPoolExecutor(max_workers=thread_count) as tpool:
+        tpool.map(download, files)
+    print("Above files downloaded.")
 
 
 if __name__ == '__main__':
-    main(url, extension, path)
+    main(url, extension)
