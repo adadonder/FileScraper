@@ -88,8 +88,7 @@ def get_all_files(url_in, extension_in):
             if not file_url:  # If not a file_url, skip
                 continue
 
-            if not (file_url[-3:] == extension_in or file_url[
-                                                     -4:] == extension_in):  # Skip if the extensions don't match.
+            if not (file_url[-3:] == extension_in or file_url[-4:] == extension_in):  # Skip if the extensions don't match.
                 continue
 
             # Make the new url by combining the original url and the file url.
