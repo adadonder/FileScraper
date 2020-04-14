@@ -1,4 +1,4 @@
-# PhotoScraper
+# FileScrape
 
 FileScrape is a tool that downloads all the files on a website that has a specific extension (jpg, png etc.). 
 Currently doesn't work on website that use JS to host pics or (mp3/4 extensions).
