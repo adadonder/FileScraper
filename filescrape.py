@@ -10,7 +10,7 @@ from urllib.parse import urljoin, urlparse
 parser = argparse.ArgumentParser(description="This script downloads all images from a web page")
 parser.add_argument("url", help="The URL of the web page you want to download images")
 parser.add_argument("extension", help="The extension of the files to download (.jpg , .pdf etc.)")
-parser.add_argument("-c", "--cookie", help="Cookie for your session ID.")
+parser.add_argument("-c", "--cookie", help="Cookie for your session ID. (If the web page requires a log-in)")
 parser.add_argument("-p", "--path",
                     help="The Directory you want to store your images, default is the domain of URL passed")
 
