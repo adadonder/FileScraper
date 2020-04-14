@@ -6,7 +6,7 @@ with open("README.md", "r") as readme_file:
 setup(
     name='PhotoScraper',
     version='1.0',
-    description='A tool that downloads images on a website',
+    description='A tool that downloads files with the given extension from a website',
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
