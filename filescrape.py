@@ -119,8 +119,8 @@ def download(url_in, pathname=path):
     :return: None
     """
     # If path doesn't exist, create it
-    if not os.path.isdir("downloaded_files/" + pathname):
-        os.makedirs("downloaded_files/" + pathname)
+    if not os.path.isdir(pathname):
+        os.makedirs(pathname)
 
     # Download the body of response by chunk, not immediately.
     response = session.get(url_in, stream=True)
